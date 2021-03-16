@@ -53,5 +53,49 @@ namespace BreadthFirstGraph
 
             return Nodes[index];
         }
+
+        public void RemoveNode(dataType name)
+        {
+            Node<dataType> node = NodeLookup(name);
+
+            for (int i = 0; i < Nodes.Count; i++)
+            {
+                if(Nodes[i] == node)
+                {
+                    Nodes.RemoveAt(i);
+                    i--;
+                }
+                else
+                {
+                    Nodes[i].RemoveNeighbour(node);
+                }
+            }
+        }
+
+        public List<dataType> BreadthFirstSearch (dataType seedNodeName)
+        {
+            Queue<Node<dataType>> queue = new Queue<Node<dataType>>();
+            List<dataType> nodeOrder = new List<dataType>();
+            Node<dataType> seedNode = NodeLookup(seedNodeName);
+
+            queue.Enqueue(seedNode);
+            seedNode.ChangeBFSState(true);
+
+            while (queue.GetCount() != 0)
+            {
+                Node<dataType> current = queue.Dequeue();
+
+                nodeOrder.Add(current.GetName());
+
+                current.BreadthFirstSearch(queue, nodeOrder);
+            }
+
+            for (int i = 0; i < Nodes.Count; i++)
+            {
+                Nodes[i].ChangeBFSState(false);
+            }
+
+            return nodeOrder;
+        }
     }
 }
