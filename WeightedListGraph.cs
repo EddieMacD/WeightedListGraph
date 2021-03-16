@@ -74,6 +74,10 @@ namespace BreadthFirstGraph
 
         public List<dataType> BreadthFirstSearch (dataType seedNodeName)
         {
+            //System.Collections.Generic.Queue<Node<dataType>> myQ = new System.Collections.Generic.Queue<Node<dataType>>();
+            ///A possible alternative
+            ///I wanted to write a queue instead to explore generics
+
             Queue<Node<dataType>> queue = new Queue<Node<dataType>>();
             List<dataType> nodeOrder = new List<dataType>();
             Node<dataType> seedNode = NodeLookup(seedNodeName);
