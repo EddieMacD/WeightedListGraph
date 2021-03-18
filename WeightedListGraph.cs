@@ -83,7 +83,7 @@ namespace BreadthFirstGraph
             Node<dataType> seedNode = NodeLookup(seedNodeName);
 
             queue.Enqueue(seedNode);
-            seedNode.ChangeBFSState(true);
+            seedNode.ChangeSearchFlag(true);
 
             while (queue.GetCount() != 0)
             {
@@ -96,10 +96,24 @@ namespace BreadthFirstGraph
 
             for (int i = 0; i < Nodes.Count; i++)
             {
-                Nodes[i].ChangeBFSState(false);
+                Nodes[i].ChangeSearchFlag(false);
             }
 
             return nodeOrder;
+        }
+
+        public List<dataType> DepthFirst (dataType seedNodeName)
+        {
+            List<dataType> nodes = new List<dataType>();
+            Node<dataType> seedNode = NodeLookup(seedNodeName);
+            seedNode.DepthFirst(nodes);
+
+            foreach (Node<dataType> node in Nodes)
+            {
+                node.ChangeSearchFlag(false);
+            }
+
+            return nodes;
         }
     }
 }

@@ -10,13 +10,14 @@ namespace BreadthFirstGraph
     {
         private dataType Name;
         private List<Edge<dataType>> Neighbours;
-        private bool BFSState;
+        private bool SearchFlag;
+
 
         public Node(dataType name)
         {
             Name = name;
             Neighbours = new List<Edge<dataType>>();
-            BFSState = false;
+            SearchFlag = false;
         }
 
         public void AssignNeighbour(Node<dataType> neighbour, int edgeWeight)
@@ -44,14 +45,14 @@ namespace BreadthFirstGraph
             return Name;
         }
 
-        public bool GetBFSState ()
+        public bool GetSearchFlag ()
         {
-            return BFSState;
+            return SearchFlag;
         }
 
-        public void ChangeBFSState (bool state)
+        public void ChangeSearchFlag (bool state)
         {
-            BFSState = state;
+            SearchFlag = state;
         }
 
         public void BreadthFirstSearch(Queue<Node<dataType>> queue, List<dataType> nodeOrder)
@@ -62,7 +63,7 @@ namespace BreadthFirstGraph
                 {
                     bool newNode = true;
 
-                    if (Neighbours[i].GetDestination().GetBFSState())
+                    if (Neighbours[i].GetDestination().GetSearchFlag())
                     {
                         newNode = false;
                     }
@@ -70,8 +71,24 @@ namespace BreadthFirstGraph
                     if (newNode)
                     {
                         queue.Enqueue(Neighbours[i].GetDestination());
-                        Neighbours[i].GetDestination().ChangeBFSState(true);
+                        Neighbours[i].GetDestination().ChangeSearchFlag(true);
                     }
+                }
+            }
+        }
+
+        public void DepthFirst (List<dataType> nodes)
+        {
+            ChangeSearchFlag(true);
+            nodes.Add(Name);
+
+            foreach (Edge<dataType> edge in Neighbours)
+            {
+                Node<dataType> neighbour = edge.GetDestination();
+
+                if(!neighbour.GetSearchFlag())
+                {
+                    neighbour.DepthFirst(nodes);
                 }
             }
         }
